@@ -1,0 +1,23 @@
+import mysql.connector as con
+Password=str(input('Enter SQL Password: '))
+mydb = con.connect(host="localhost",user="root",password=Password)
+if mydb.is_connected():
+    print("Connection Established Successfully")
+else:
+    print("Connection Failed!")
+adminuser=input("Enter username to create your admin profile: ")
+adminpass=input("Enter password: ")
+mycursor=mydb.cursor()
+mycursor.execute("CREATE DATABASE IF NOT EXISTS PROGRAM")
+mycursor.execute("USE PROGRAM")
+mydb.commit()
+mycursor.execute('''CREATE TABLE IF NOT EXISTS ADMIN_LOGIN(USERNAME VARCHAR(20),PASSWORD VARCHAR(20))''')
+mydb.commit()
+mycursor.execute(f'''INSERT INTO ADMIN_LOGIN VALUES('{adminuser}','{adminpass}')''')
+mycursor.execute('''CREATE TABLE IF NOT EXISTS USER_LOGIN(USERNAME VARCHAR(20),PASSWORD VARCHAR(20))''')
+mydb.commit()
+mycursor.execute('''CREATE TABLE IF NOT EXISTS CUSTOMER(TICKET_NO VARCHAR(6),M_NAME VARCHAR(60),MOBILE_NO VARCHAR(10),NO_OF_TICKETS INT,SHOW_DATE DATE)''')
+mydb.commit()
+mycursor.execute('''CREATE TABLE IF NOT EXISTS ADMIN_TABLE(MNAME VARCHAR(60),DATE_AND_TIME VARCHAR(80),PRICE FLOAT)''')
+mydb.commit()
+print('Database and Tables Created successfully')
